@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+</head>
+
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <h3 class="text-center">
+                    <%= title %>
+                </h3>
+                <form method="POST" action="/send-otp">
+                    <div class="form-group">
+                        <label>Mobile Number or Email</label>
+                        <input type="text" class="form-control" name="mobile" required
+                            placeholder="Enter mobile number or email">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Send OTP</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
