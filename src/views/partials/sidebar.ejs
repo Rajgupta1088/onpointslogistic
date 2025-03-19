@@ -1,71 +1,13 @@
-<% let showDashboard=false; let showFleet=false; let showRoles=false; if (typeof permissions !=='undefined' &&
-    permissions.length> 0) {
-
-    for (var i = 0; i < permissions.length; i++) { if (permissions[i].module==="Dashboard" &&
-        permissions[i].module_permission) { showDashboard=true; } if (permissions[i].module==="Fleet Management" &&
-        permissions[i].module_permission) { showFleet=true; } if (permissions[i].module==="Roles & Permissions" &&
-        permissions[i].module_permission) { showRoles=true; } } } %>
-
-
-        <nav class="sidebar d-flex flex-column p-3 text-white shadow-lg"
-            style="background-color: #343a40; height: 100vh; width: 250px;">
-
-            <a href="/dashboard" class="d-flex align-items-center mb-3 text-white text-decoration-none">
-                <img src="https://www.wavespb.com/assets/images/fav_wave.png" alt="Logo" width="30" height="30"
-                    class="me-2 rounded-circle">
-                <span class="fs-4">Logistics</span>
-            </a>
-            <hr>
-
-            <ul class="nav nav-pills flex-column mb-auto">
-
-                <!-- Dashboard -->
-                <% if (showDashboard) { %>
-                    <li class="nav-item">
-                        <a href="/dashboard" class="nav-link text-white">
-                            <i class="bi bi-speedometer2 me-2"></i> Dashboard
-                        </a>
-                    </li>
-                    <% } %>
-
-                        <!-- Profile (Always Visible) -->
-                        <li>
-                            <a href="/profile" class="nav-link text-white">
-                                <i class="bi bi-person-circle me-2"></i> Profile
-                            </a>
-                        </li>
-
-                        <!-- Fleet -->
-                        <% if (showFleet) { %>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle text-white" href="#" id="fleetDropdown" role="button"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="bi bi-truck me-2"></i> Fleet Management
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-dark ms-3">
-                                    <li><a class="dropdown-item" href="/fleet/vehicles">Vehicles</a></li>
-                                    <li><a class="dropdown-item" href="/fleet/drivers">Drivers</a></li>
-                                    <li><a class="dropdown-item" href="/fleet/routes">Routes</a></li>
-                                </ul>
-                            </li>
-                            <% } %>
-
-                                <!-- Roles -->
-                                <% if (showRoles) { %>
-                                    <li>
-                                        <a href="/roles" class="nav-link text-white">
-                                            <i class="bi bi-graph-up-arrow me-2"></i> Roles & Permissions
-                                        </a>
-                                    </li>
-                                    <% } %>
-
-                                        <!-- Settings (Always Visible) -->
-                                        <li>
-                                            <a href="/settings" class="nav-link text-white">
-                                                <i class="bi bi-gear me-2"></i> Settings
-                                            </a>
-                                        </li>
-
-            </ul>
-
-        </nav>
+<div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 250px; height: 100vh;">
+    <ul class="nav nav-pills flex-column mb-auto">
+        <li class="nav-item">
+            <a href="/dashboard" class="nav-link active">Dashboard</a>
+        </li>
+        <li>
+            <a href="/roles" class="nav-link">Roles</a>
+        </li>
+        <li>
+            <a href="/users" class="nav-link">Users</a>
+        </li>
+    </ul>
+</div>

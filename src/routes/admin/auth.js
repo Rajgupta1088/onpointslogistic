@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const AuthCtrl = require('../../controllers/admin/authController')
 const DashboardCtrl = require('../../controllers/admin/dashboardController')
+const RolesCtrl = require('../../controllers/admin/rolesController')
 const checkLoggedIn = require('../../middleware/admin/checkLoggedIn');
 
 
@@ -10,6 +11,7 @@ router.post('/send-otp', AuthCtrl.sendOtp)
 router.get('/verify-otp', checkLoggedIn, AuthCtrl.verifyOtp);
 router.post('/verify-otp-data', AuthCtrl.verifyOtpData)
 router.get('/dashboard', DashboardCtrl.dashboardPage)
+router.get('/roles', RolesCtrl.rolesPermissions)
 
 
 

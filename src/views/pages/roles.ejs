@@ -24,7 +24,6 @@
             <div class="mb-3">
                 <label>Admin Type:</label>
                 <select class="form-control" name="admin_type">
-                    <option value="Admin">Admin</option>
                     <option value="Sub Admin">Sub Admin</option>
                 </select>
             </div>
@@ -109,7 +108,7 @@
                 formData.permissions.push(permission);
             });
 
-            $.post("/admin/permission", formData, function (response) {
+            $.post("/api/admins", formData, function (response) {
                 alert("Admin saved successfully!");
             });
         });
