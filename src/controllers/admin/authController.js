@@ -4,6 +4,16 @@ const Admin = require('../../models/admin/AdminUser');
 const loginPage = (req, res) => {
     res.render('pages/login', { title: 'OnPoints Admin ', layout: false });
 };
+const logout = (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            console.log('Error destroying session:', err);
+            return res.redirect('/');
+        }
+        res.clearCookie('connect.sid'); // Clears session cookie
+        res.redirect('/');
+    });
+};
 
 // Send OTP function
 const sendOtp = (req, res) => {
@@ -80,5 +90,6 @@ module.exports = {
     loginPage,
     sendOtp,
     verifyOtp,
-    verifyOtpData
+    verifyOtpData,
+    logout
 };

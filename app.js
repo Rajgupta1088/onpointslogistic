@@ -5,6 +5,7 @@ const path = require('path');
 const connectDB = require('./src/config/db');
 const authRoutes = require('./src/routes/admin/auth');
 const expressLayouts = require('express-ejs-layouts');
+const { setGlobalPermissions } = require('./src/middleware/admin/checkPermission');
 
 const app = express();
 
@@ -25,6 +26,8 @@ app.use(session({
 }));
 
 // EJS Setup
+app.use(setGlobalPermissions);
+
 app.use(expressLayouts);
 app.set('views', path.join(__dirname, 'src', 'views'));
 app.set('view engine', 'ejs');

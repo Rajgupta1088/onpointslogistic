@@ -52,16 +52,17 @@
 </head>
 
 <body>
+    <!-- <% const json_data={ dashboard: false , roles:true } %> -->
     <div class="d-flex">
         <!-- Sidebar -->
         <div class="sidebar p-3">
             <h4 class="text-center mb-4">🚚 Logistics</h4>
             <ul class="nav flex-column">
-                <li class="nav-item mb-2">
+                <li class="nav-item mb-2 <%= !modulePermissions['Dashboard'] ? 'd-none' : '' %>">
                     <a href="/dashboard" class="nav-link active"><i class="bi bi-house me-2"></i>Dashboard</a>
                 </li>
-                <li class="nav-item mb-2">
-                    <a href="/roles" class="nav-link"><i class="bi bi-person-gear me-2"></i>Roles</a>
+                <li class="nav-item mb-2 <%= !modulePermissions['Roles_Management'] ? 'd-none' : '' %>">
+                    <a href="/roles" class="nav-link"><i class="bi bi-person-gear me-2"></i>Role Management</a>
                 </li>
                 <li class="nav-item mb-2">
                     <a href="/users" class="nav-link"><i class="bi bi-people me-2"></i>Users</a>
