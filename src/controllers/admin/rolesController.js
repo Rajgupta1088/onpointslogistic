@@ -2,7 +2,6 @@
 const express = require('express');
 const router = express.Router();
 const AdminUser = require('../../models/admin/AdminUser');
-
 const bcrypt = require('bcrypt');
 
 const saveRolesPermissions = async (req, res) => {
@@ -10,7 +9,6 @@ const saveRolesPermissions = async (req, res) => {
         const { name, email, admin_type, password, country_access, city_access, permissions } = req.body;
 
         const hashedPassword = await bcrypt.hash(password, 10);
-
         const adminUser = new AdminUser({
             name,
             email,
@@ -33,5 +31,4 @@ const rolesPermissions = (req, res) => {
     res.render('pages/roles');
 }
 
-module.exports = router;
 module.exports = { rolesPermissions, saveRolesPermissions }
