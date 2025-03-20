@@ -10,6 +10,7 @@ const PermissionSchema = new mongoose.Schema({
 
 const AdminUserSchema = new mongoose.Schema({
     name: { type: String, required: true },
+    mobile: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     admin_type: { type: String, default: 'Sub Admin' },
     password: { type: String, required: true },

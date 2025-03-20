@@ -18,6 +18,10 @@
                 <input type="text" class="form-control" name="name" required>
             </div>
             <div class="mb-3">
+                <label>Mobile:</label>
+                <input type="text" class="form-control" name="mobile" required>
+            </div>
+            <div class="mb-3">
                 <label>Email:</label>
                 <input type="email" class="form-control" name="email" required>
             </div>
@@ -88,6 +92,7 @@
 
             let formData = {
                 name: $("input[name='name']").val(),
+                mobile: $("input[name='mobile']").val(),
                 email: $("input[name='email']").val(),
                 admin_type: $("select[name='admin_type']").val(),
                 password: $("input[name='password']").val(),

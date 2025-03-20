@@ -6,11 +6,12 @@ const bcrypt = require('bcrypt');
 
 const saveRolesPermissions = async (req, res) => {
     try {
-        const { name, email, admin_type, password, country_access, city_access, permissions } = req.body;
+        const { name, mobile, email, admin_type, password, country_access, city_access, permissions } = req.body;
 
         const hashedPassword = await bcrypt.hash(password, 10);
         const adminUser = new AdminUser({
             name,
+            mobile,
             email,
             admin_type,
             password: hashedPassword,
