@@ -108,7 +108,7 @@
                 formData.permissions.push(permission);
             });
 
-            $.post("/api/admins", formData, function (response) {
+            $.post("/save-roles", formData, function (response) {
                 alert("Admin saved successfully!");
             });
         });

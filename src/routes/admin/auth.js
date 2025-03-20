@@ -12,6 +12,7 @@ router.get('/verify-otp', checkLoggedIn, AuthCtrl.verifyOtp);
 router.post('/verify-otp-data', AuthCtrl.verifyOtpData)
 router.get('/dashboard', DashboardCtrl.dashboardPage)
 router.get('/roles', RolesCtrl.rolesPermissions)
+router.post('/save-roles', RolesCtrl.saveRolesPermissions)
 
 
 
