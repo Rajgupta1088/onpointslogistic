@@ -18,4 +18,5 @@ const AdminUserSchema = new mongoose.Schema({
     permissions: [PermissionSchema],
 }, { timestamps: true });
 
+
 module.exports = mongoose.model('AdminUser', AdminUserSchema);
