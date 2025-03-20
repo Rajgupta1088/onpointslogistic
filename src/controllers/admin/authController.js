@@ -1,5 +1,6 @@
 const loginPage = (req, res) => {
-    res.render('pages/login', { title: 'OnPoints Admin ' });
+    res.render('pages/login', { title: 'OnPoints Admin ', layout: false });
+
 };
 
 const sendOtp = (req, res) => {
@@ -17,7 +18,7 @@ const sendOtp = (req, res) => {
 }
 
 const verifyOtp = (req, res) => {
-    res.render('pages/otp');
+    res.render('pages/otp', { layout: false });
 }
 
 const generateOTP = () => {
