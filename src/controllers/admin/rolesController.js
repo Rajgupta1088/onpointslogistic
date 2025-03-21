@@ -29,7 +29,7 @@ const saveRolesPermissions = async (req, res) => {
 }
 
 const rolesPermissions = (req, res) => {
-    res.render('pages/roles');
+    res.render('pages/Roles/roles');
 }
 
 module.exports = { rolesPermissions, saveRolesPermissions }

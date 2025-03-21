@@ -2,7 +2,7 @@ const Admin = require('../../models/admin/AdminUser');
 
 // Render login page
 const loginPage = (req, res) => {
-    res.render('pages/login', { title: 'OnPoints Admin ', layout: false });
+    res.render('pages/Login/login', { title: 'OnPoints Admin ', layout: false });
 };
 const logout = (req, res) => {
     req.session.destroy((err) => {
@@ -34,7 +34,7 @@ const sendOtp = (req, res) => {
 
 // Render OTP page
 const verifyOtp = (req, res) => {
-    res.render('pages/otp', { layout: false });
+    res.render('pages/Login/otp', { layout: false });
 };
 
 // OTP generator

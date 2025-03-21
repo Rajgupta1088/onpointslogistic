@@ -13,8 +13,8 @@ router.get('/', checkLoggedIn, AuthCtrl.loginPage);
 router.get('/dashboard', DashboardCtrl.dashboardPage)
 router.get('/verifyOtp', checkLoggedIn, AuthCtrl.verifyOtp);
 
-router.post('/send-otp', AuthCtrl.sendOtp)
-router.post('/users/list', UserCtrl.userList)
+router.post('/sendOtp', AuthCtrl.sendOtp)
+router.post('/usersList', UserCtrl.userList)
 router.post('/updateUser', UserCtrl.updateUser)
 router.post('/saveUserdata', UserCtrl.saveUserData)
 router.post('/verifyOtpData', AuthCtrl.verifyOtpData)

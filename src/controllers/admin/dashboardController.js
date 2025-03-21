@@ -1,6 +1,6 @@
 
 const dashboardPage = (req, res) => {
-    res.render('pages/dashboard', {
+    res.render('pages/Dashboard/dashboard', {
         title: 'Dashboard',
         layout: 'layouts/main'
     });

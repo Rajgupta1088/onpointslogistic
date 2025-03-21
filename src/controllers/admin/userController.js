@@ -45,16 +45,12 @@ const saveUserData = async (req, res) => {
         const { name, email, mobile, gender, status } = req.body;
         await User.create({ name, email, mobile, gender, status });
         res.redirect('/users');
+
     } catch (err) {
         console.error(err);
         res.status(500).send('Error saving user');
     }
 };
-
-const editUserForm = async (req, res) => {
-    const user = await User.findById(req.params.id);
-    res.render('user_form', { user });
-}
 
 const updateUser = async (req, res) => {
     try {
