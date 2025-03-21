@@ -3,7 +3,7 @@ const express = require('express');
 const session = require('express-session');
 const path = require('path');
 const connectDB = require('./src/config/db');
-const authRoutes = require('./src/routes/admin/auth');
+const authRoutes = require('./src/routes/admin/authRoutes');
 const expressLayouts = require('express-ejs-layouts');
 const { setGlobalPermissions } = require('./src/middleware/admin/checkPermission');
 

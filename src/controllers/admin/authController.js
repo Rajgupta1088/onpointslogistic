@@ -1,4 +1,4 @@
-const Admin = require('../../models/admin/AdminUser');
+const Admin = require('../../models/admin/adminModel');
 
 // Render login page
 const loginPage = (req, res) => {

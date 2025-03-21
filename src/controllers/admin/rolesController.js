@@ -1,7 +1,7 @@
 
 const express = require('express');
 const router = express.Router();
-const AdminUser = require('../../models/admin/AdminUser');
+const AdminUser = require('../../models/admin/adminModel');
 const bcrypt = require('bcrypt');
 
 const saveRolesPermissions = async (req, res) => {
