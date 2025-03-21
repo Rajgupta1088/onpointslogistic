@@ -24,11 +24,13 @@ const UserSchema = new mongoose.Schema({
         enum: ['Male', 'Female', 'Other'],
         required: true
     },
+
     status: {
         type: String,
-        enum: ['Active', 'In-Active'],
-        required: true
+        enum: ['Active', 'Inactive'], // Possible values
+        default: 'Active'
     }
+
 }, { timestamps: true });
 
 module.exports = mongoose.model('User', UserSchema);

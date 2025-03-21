@@ -1,5 +1,7 @@
+<!-- Bootstrap + FontAwesome + DataTable CSS -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" rel="stylesheet">
 
 <style>
     .btn-pink {
@@ -25,7 +27,7 @@
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h3 class="fw-bold">👥 User Management</h3>
-        <button class="btn btn-pink" data-bs-toggle="modal" data-bs-target="#addUserModal">
+        <button class="btn btn-pink" id="addUserBtn">
             <i class="fas fa-plus"></i> Add User
         </button>
     </div>
@@ -51,13 +53,13 @@
 </div>
 
 <!-- Add/Edit User Modal -->
-<div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+<div class="modal fade" id="addUserModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <form id="userForm" method="POST">
                 <input type="hidden" name="user_id" id="user_id" value="">
                 <div class="modal-header bg-pink text-white">
-                    <h5 class="modal-title" id="addUserModalLabel">Add User</h5>
+                    <h5 class="modal-title">Add User</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
 
@@ -97,27 +99,20 @@
     </div>
 </div>
 
+<!-- JS dependencies -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-<link href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" rel="stylesheet">
 
 <script>
     $(document).ready(function () {
-        var table = $('#artistTable').DataTable({
+        const userModal = new bootstrap.Modal(document.getElementById('addUserModal'));
+        let table = $('#artistTable').DataTable({
             processing: true,
             serverSide: true,
-            ajax: {
-                url: '/usersList',
-                type: 'POST'
-            },
+            ajax: { url: '/usersList', type: 'POST' },
             columns: [
-                {
-                    data: null,
-                    render: function (data, type, row, meta) {
-                        return meta.row + meta.settings._iDisplayStart + 1;
-                    }
-                },
+                { data: null, render: (data, type, row, meta) => meta.row + meta.settings._iDisplayStart + 1 },
                 { data: 'name' },
                 { data: 'email' },
                 { data: 'mobile' },
@@ -125,60 +120,70 @@
                 { data: 'status' },
                 {
                     data: null,
-                    render: function (data, type, row) {
-                        return `
-                            <button class="btn btn-sm btn-primary me-2 editUserBtn" data-user='${JSON.stringify(row)}'>
-                                <i class="fas fa-edit"></i> Edit
-                            </button>
-                            <button class="btn btn-sm btn-primary me-2 delUserBtn" data-user='${JSON.stringify(row)}'>
-                                <i class="fas fa-trash"></i> Delete
-                            </button>`;
-                    }
+                    render: (data, type, row) => `
+                        <button class="btn btn-sm btn-primary me-2 editUserBtn" data-user='${JSON.stringify(row)}'>
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="btn btn-sm btn-danger delUserBtn" data-id='${row._id}'>
+                            <i class="fas fa-trash"></i> Delete
+                        </button>`
                 }
             ]
         });
 
-        // Handle Add/Edit modal open
+        // Add User Button Click
+        $('#addUserBtn').click(() => {
+            resetForm();
+            $('#addUserModal .modal-title').text('Add User');
+            $('#submitBtn').text('Add User');
+            $('#userForm').attr('action', '/saveUserdata');
+            userModal.show();
+        });
+
+        // Edit User Button Click
         $('#artistTable').on('click', '.editUserBtn', function () {
-            var user = $(this).data('user');
-            $('#user_id').val(user._id); // assuming _id is unique id
+            let user = $(this).data('user');
+            $('#user_id').val(user._id);
             $('#name').val(user.name);
             $('#email').val(user.email);
             $('#mobile').val(user.mobile);
             $('#gender').val(user.gender);
             $('#status').val(user.status);
-            $('#addUserModalLabel').text('Edit User');
+            $('#addUserModal .modal-title').text('Edit User');
             $('#submitBtn').text('Update User');
-            $('#userForm').attr('action', '/updateUser'); // change form action for update
-            $('#addUserModal').modal('show');
+            $('#userForm').attr('action', '/updateUser');
+            userModal.show();
         });
 
-        // Reset modal on Add button click
+        // Delete User
+        $('#artistTable').on('click', '.delUserBtn', function () {
+            const userId = $(this).data('id');
+            if (confirm(`Are you sure you want to delete this user?`)) {
+                $.ajax({
+                    url: `/delete-user/${userId}`,
+                    type: 'DELETE',
+                    success: function (response) {
+                        alert(response.message);
+                        table.ajax.reload();
+                    },
+                    error: function () {
+                        alert('Failed to delete user');
+                    }
+                });
+            }
+        });
+
+        // Reset form on modal hide
         $('#addUserModal').on('hidden.bs.modal', function () {
+            resetForm();
+        });
+
+        function resetForm() {
             $('#userForm')[0].reset();
             $('#user_id').val('');
-            $('#addUserModalLabel').text('Add User');
+            $('#addUserModal .modal-title').text('Add User');
             $('#submitBtn').text('Add User');
-            $('#userForm').attr('action', '/saveUserdata'); // default action
-        });
-    });
-
-    $('#artistTable').on('click', '.delUserBtn', function () {
-        var user = $(this).data('user');
-        if (confirm(`Are you sure you want to delete user "${user.name}"?`)) {
-            $.ajax({
-                url: `/delete-user/${user._id}`,
-                type: 'DELETE',
-                success: function (response) {
-                    alert(response.message);
-                    $('#artistTable').DataTable().ajax.reload(); // Refresh table
-                },
-                error: function (err) {
-                    alert('Failed to delete user');
-                }
-            });
+            $('#userForm').attr('action', '/saveUserdata');
         }
     });
-
-
 </script>
