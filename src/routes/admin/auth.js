@@ -6,23 +6,20 @@ const RolesCtrl = require('../../controllers/admin/rolesController')
 const UserCtrl = require('../../controllers/admin/userController')
 const checkLoggedIn = require('../../middleware/admin/checkLoggedIn');
 
-
-router.get('/', checkLoggedIn, AuthCtrl.loginPage);
-router.post('/send-otp', AuthCtrl.sendOtp)
-router.get('/verify-otp', checkLoggedIn, AuthCtrl.verifyOtp);
-router.post('/verify-otp-data', AuthCtrl.verifyOtpData)
-router.get('/dashboard', DashboardCtrl.dashboardPage)
-router.get('/roles', RolesCtrl.rolesPermissions)
-router.post('/save-roles', RolesCtrl.saveRolesPermissions)
 router.get('/logout', AuthCtrl.logout)
-
 router.get('/users', UserCtrl.userPage)
-router.post('/save-userdata', UserCtrl.saveUserData)
+router.get('/roles', RolesCtrl.rolesPermissions)
+router.get('/', checkLoggedIn, AuthCtrl.loginPage);
+router.get('/dashboard', DashboardCtrl.dashboardPage)
+router.get('/verifyOtp', checkLoggedIn, AuthCtrl.verifyOtp);
+
+router.post('/send-otp', AuthCtrl.sendOtp)
 router.post('/users/list', UserCtrl.userList)
+router.post('/updateUser', UserCtrl.updateUser)
+router.post('/saveUserdata', UserCtrl.saveUserData)
+router.post('/verifyOtpData', AuthCtrl.verifyOtpData)
+router.post('/saveRoles', RolesCtrl.saveRolesPermissions)
 
-
-
-
-
+router.delete('/delete-user/:id', UserCtrl.deleteUser);
 
 module.exports = router;

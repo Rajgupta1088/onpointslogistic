@@ -29,7 +29,7 @@ const sendOtp = (req, res) => {
     req.session.mobile = mobile;
 
     console.log(`Generated OTP: ${otp}`); // (Send via SMS in production)
-    res.redirect('/verify-otp');
+    res.redirect('/verifyOtp');
 };
 
 // Render OTP page
@@ -82,7 +82,7 @@ const verifyOtpData = async (req, res) => {
 
     } else {
         console.log('Invalid OTP. Please try again.');
-        return res.redirect('/verify-otp');
+        return res.redirect('/verifyOtp');
     }
 };
 

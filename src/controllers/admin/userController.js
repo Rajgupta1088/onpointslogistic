@@ -56,20 +56,56 @@ const editUserForm = async (req, res) => {
     res.render('user_form', { user });
 }
 
-const editUser = async (req, res) => {
+const updateUser = async (req, res) => {
+    try {
+        const { user_id, name, email, mobile, gender, status } = req.body;
 
-    const { name, email, mobile, gender, dob } = req.body;
-    await User.findByIdAndUpdate(req.params.id, { name, email, mobile, gender, dob });
-    res.redirect('/users');
+        if (!user_id) {
+            return res.status(400).send('User ID is required');
+        }
+
+        const user = await User.findById(user_id);
+
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
+
+        // Update fields
+        user.name = name;
+        user.email = email;
+        user.mobile = mobile;
+        user.gender = gender;
+        user.status = status;
+
+        await user.save();
+        res.redirect('/users'); // Or send JSON if needed
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Something went wrong');
+    }
 
 }
 
 const deleteUser = async (req, res) => {
-    await User.findByIdAndDelete(req.params.id);
-    res.redirect('/users');
+    try {
+        const userId = req.params.id;
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        await User.findByIdAndDelete(userId);
+        return res.json({ message: 'User deleted successfully' });
+
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ message: 'Something went wrong' });
+    }
 }
 
-module.exports = { userPage, saveUserData, userList }
+module.exports = { userPage, saveUserData, userList, updateUser, deleteUser }
 
 
 
