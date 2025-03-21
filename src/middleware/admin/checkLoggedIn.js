@@ -1,7 +1,7 @@
 module.exports = (req, res, next) => {
     if (req.session && req.session.isLoggedIn) {
         // User already logged in
-        console.log('req.originalUrl', req.originalUrl);
+        // console.log('req.originalUrl', req.originalUrl);
         if (req.originalUrl === '/') {
 
             // User is trying to visit login page after login
