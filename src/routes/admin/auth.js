@@ -3,6 +3,7 @@ const router = express.Router();
 const AuthCtrl = require('../../controllers/admin/authController')
 const DashboardCtrl = require('../../controllers/admin/dashboardController')
 const RolesCtrl = require('../../controllers/admin/rolesController')
+const UserCtrl = require('../../controllers/admin/userController')
 const checkLoggedIn = require('../../middleware/admin/checkLoggedIn');
 
 
@@ -15,18 +16,13 @@ router.get('/roles', RolesCtrl.rolesPermissions)
 router.post('/save-roles', RolesCtrl.saveRolesPermissions)
 router.get('/logout', AuthCtrl.logout)
 
+router.get('/users', UserCtrl.userPage)
+router.post('/save-userdata', UserCtrl.saveUserData)
+router.post('/users/list', UserCtrl.userList)
 
 
 
-// Logout
-router.get('/logout', (req, res) => {
-    req.session.destroy((err) => {
-        if (err) {
-            console.error('Error destroying session:', err);
-            return res.redirect('/dashboard'); // Redirect back safely
-        }
-        res.redirect('/login');
-    });
-});
+
+
 
 module.exports = router;
