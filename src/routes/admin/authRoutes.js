@@ -13,6 +13,14 @@ router.get('/', isAuthenticated, AuthCtrl.loginPage);
 router.get('/permissionDenied', AuthCtrl.permissionDenied);
 router.get('/verifyOtp', AuthCtrl.verifyOtp);
 router.post('/sendOtp', AuthCtrl.sendOtp);
+router.post('/usersList', UserCtrl.userList);
+router.post('/saveUserdata', UserCtrl.saveUserData);
+router.post('/updateUser', UserCtrl.updateUser);
+router.post('/saveRoles', RolesCtrl.saveRolesPermissions);
+router.delete('/delete-user/:id', UserCtrl.deleteUser);
+
+
+
 router.post('/verifyOtpData', AuthCtrl.verifyOtpData);
 
 // Logout route
@@ -26,11 +34,6 @@ router.get('/dashboard', DashboardCtrl.dashboardPage);
 router.get('/userManagement', UserCtrl.userPage);
 router.get('/rolesManagement', RolesCtrl.rolesPermissions);
 
-router.post('/usersList', UserCtrl.userList);
-router.post('/updateUser', UserCtrl.updateUser);
-router.post('/saveUserdata', UserCtrl.saveUserData);
-router.post('/saveRoles', RolesCtrl.saveRolesPermissions);
 
-router.delete('/delete-user/:id', UserCtrl.deleteUser);
 
 module.exports = router;
