@@ -44,7 +44,7 @@ const saveUserData = async (req, res) => {
     try {
         const { name, email, mobile, gender, status } = req.body;
         await User.create({ name, email, mobile, gender, status });
-        res.redirect('/users');
+        res.redirect('/userManagement');
 
     } catch (err) {
         console.error(err);
@@ -74,7 +74,7 @@ const updateUser = async (req, res) => {
         user.status = status;
 
         await user.save();
-        res.redirect('/users'); // Or send JSON if needed
+        res.redirect('/userManagement'); // Or send JSON if needed
 
     } catch (err) {
         console.error(err);

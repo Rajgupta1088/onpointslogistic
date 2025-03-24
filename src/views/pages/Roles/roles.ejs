@@ -55,42 +55,63 @@
                 </thead>
                 <tbody id="permissionsTable">
                     <tr>
-                        <td>Dashboard</td>
+                        <td>Dashboard
+                            <input type="hidden" class="url" value="dashboard">
+                        </td>
                         <td><input type="checkbox" class="add"></td>
                         <td><input type="checkbox" class="edit"></td>
                         <td><input type="checkbox" class="delete"></td>
                         <td><input type="checkbox" class="export"></td>
                     </tr>
                     <tr>
-                        <td>Role Management</td>
+                        <td>User Management
+                            <input type="hidden" class="url" value="userManagement">
+                        </td>
                         <td><input type="checkbox" class="add"></td>
                         <td><input type="checkbox" class="edit"></td>
                         <td><input type="checkbox" class="delete"></td>
                         <td><input type="checkbox" class="export"></td>
                     </tr>
                     <tr>
-                        <td>Fleet Management</td>
+                        <td>Role Management
+                            <input type="hidden" class="url" value="roleManagement">
+                        </td>
                         <td><input type="checkbox" class="add"></td>
                         <td><input type="checkbox" class="edit"></td>
                         <td><input type="checkbox" class="delete"></td>
                         <td><input type="checkbox" class="export"></td>
                     </tr>
                     <tr>
-                        <td>Order Management</td>
+                        <td>Fleet Management
+                            <input type="hidden" class="url" value="fleetManagement">
+                        </td>
                         <td><input type="checkbox" class="add"></td>
                         <td><input type="checkbox" class="edit"></td>
                         <td><input type="checkbox" class="delete"></td>
                         <td><input type="checkbox" class="export"></td>
                     </tr>
                     <tr>
-                        <td>Shipment Management</td>
+                        <td>Order Management
+                            <input type="hidden" class="url" value="orderManagement">
+                        </td>
                         <td><input type="checkbox" class="add"></td>
                         <td><input type="checkbox" class="edit"></td>
                         <td><input type="checkbox" class="delete"></td>
                         <td><input type="checkbox" class="export"></td>
                     </tr>
                     <tr>
-                        <td>Warehouse Management</td>
+                        <td>Shipment Management
+                            <input type="hidden" class="url" value="shipmentManagement">
+                        </td>
+                        <td><input type="checkbox" class="add"></td>
+                        <td><input type="checkbox" class="edit"></td>
+                        <td><input type="checkbox" class="delete"></td>
+                        <td><input type="checkbox" class="export"></td>
+                    </tr>
+                    <tr>
+                        <td>Warehouse Management
+                            <input type="hidden" class="url" value="warehouseManagement">
+                        </td>
                         <td><input type="checkbox" class="add"></td>
                         <td><input type="checkbox" class="edit"></td>
                         <td><input type="checkbox" class="delete"></td>
@@ -104,6 +125,7 @@
     </div>
 
     <script>
+        // Select All
         function selectAll(columnClass, selectAllId) {
             $(selectAllId).on("change", function () {
                 $("." + columnClass).prop("checked", this.checked);
@@ -115,6 +137,7 @@
         selectAll("delete", "#selectAllDelete");
         selectAll("export", "#selectAllExport");
 
+        // Form Submission
         $("#adminForm").on("submit", function (event) {
             event.preventDefault();
 
@@ -130,7 +153,7 @@
             };
 
             $("#permissionsTable tr").each(function () {
-                let module = $(this).find("td:first-child").text().trim();
+                let module = $(this).find(".url").val(); // Correctly fetch hidden input
                 let permission = {
                     module: module,
                     add: $(this).find(".add").prop("checked"),
@@ -141,8 +164,15 @@
                 formData.permissions.push(permission);
             });
 
+            console.log(formData); // For Debugging
+
+            // Post request (Adjust URL accordingly)
             $.post("/saveRoles", formData, function (response) {
                 alert("Admin saved successfully!");
+                // Optionally redirect or reset form
+                $("#adminForm")[0].reset();
+            }).fail(function () {
+                alert("Error saving admin!");
             });
         });
     </script>

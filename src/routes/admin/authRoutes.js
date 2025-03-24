@@ -10,6 +10,7 @@ const isAuthenticated = require('../../middleware/admin/checkLoggedIn');
 
 // Public Routes (No middleware)
 router.get('/', isAuthenticated, AuthCtrl.loginPage);
+router.get('/permissionDenied', AuthCtrl.permissionDenied);
 router.get('/verifyOtp', AuthCtrl.verifyOtp);
 router.post('/sendOtp', AuthCtrl.sendOtp);
 router.post('/verifyOtpData', AuthCtrl.verifyOtpData);
@@ -22,8 +23,8 @@ router.use(isAuthenticated);
 
 // Protected Routes (Need login)
 router.get('/dashboard', DashboardCtrl.dashboardPage);
-router.get('/users', UserCtrl.userPage);
-router.get('/roles', RolesCtrl.rolesPermissions);
+router.get('/userManagement', UserCtrl.userPage);
+router.get('/rolesManagement', RolesCtrl.rolesPermissions);
 
 router.post('/usersList', UserCtrl.userList);
 router.post('/updateUser', UserCtrl.updateUser);

@@ -86,10 +86,15 @@ const verifyOtpData = async (req, res) => {
     }
 };
 
+const permissionDenied = (req, res) => {
+    res.render('pages/Login/not_authorized');
+};
+
 module.exports = {
     loginPage,
     sendOtp,
     verifyOtp,
     verifyOtpData,
-    logout
+    logout,
+    permissionDenied
 };

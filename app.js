@@ -22,7 +22,7 @@ app.use(session({
     secret: process.env.SESSION_SECRET || 'default_secret',
     resave: false,
     saveUninitialized: true,
-    cookie: { maxAge: 10 * 60 * 1000 } // 10 minutes
+    cookie: { maxAge: 10 * 60 * 100000 } // 10 minutes
 }));
 
 // EJS Setup

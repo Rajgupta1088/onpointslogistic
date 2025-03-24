@@ -12,6 +12,8 @@ const setGlobalPermissions = (req, res, next) => {
         modulePermissions[key] = p.add || p.edit || p.delete || p.export;
     });
 
+    req.session.modulePermissions = modulePermissions;
+
     console.log('Module Permissions:', modulePermissions);
 
     res.locals.modulePermissions = modulePermissions; // Pass to EJS
