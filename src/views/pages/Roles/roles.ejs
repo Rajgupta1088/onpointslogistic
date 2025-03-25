@@ -178,7 +178,7 @@
             // Post request (Adjust URL accordingly)
             $.post("/saveRoles", formData, function (response) {
                 alert("Admin saved successfully!");
-                // Optionally redirect or reset form
+
                 $("#adminForm")[0].reset();
             }).fail(function () {
                 alert("Error saving admin!");

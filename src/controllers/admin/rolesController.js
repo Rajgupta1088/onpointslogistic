@@ -33,6 +33,26 @@ const rolesPermissions = (req, res) => {
     res.render('pages/Roles/roles');
 }
 
+const mongoose = require('mongoose');
+
+const editRole = async (req, res) => {
+    try {
+        const { id } = req.body;
+
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ success: false, message: 'Invalid ID format' });
+        }
+        const user = await AdminUser.findById(id);
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
+        res.json({ success: true, data: user }); // Return user data
+    } catch (error) {
+        console.error('Error fetching role:', error);
+        res.status(500).json({ success: false, message: 'Internal Server Error' });
+    }
+};
+
 const backendUser = (req, res) => {
     res.render('pages/Roles/backend_user');
 }
@@ -73,4 +93,4 @@ const getList = async (req, res) => {
         res.status(500).json({ error: 'Something went wrong' });
     }
 };
-module.exports = { rolesPermissions, saveRolesPermissions, backendUser, getList }
+module.exports = { rolesPermissions, saveRolesPermissions, backendUser, getList, editRole }

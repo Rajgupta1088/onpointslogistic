@@ -46,6 +46,132 @@
         </div>
     </div>
 </div>
+<!-- Add/Edit Sub-Admin Modal -->
+<div class="modal fade" id="addUserModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form id="subAdminForm" method="POST">
+                <input type="hidden" name="user_id" id="user_id" value="">
+
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title">Edit Sub Admin</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Name</label>
+                        <input type="text" class="form-control" name="name" id="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Mobile</label>
+                        <input type="text" class="form-control" name="mobile" id="mobile" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" name="email" id="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Admin Type</label>
+                        <select class="form-control" name="admin_type" id="admin_type">
+                            <option value="Sub Admin">Sub Admin</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-control" name="password" id="password" required>
+                    </div>
+
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="country_access" name="country_access">
+                        <label class="form-check-label" for="country_access">Enable Country Based Access Control</label>
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="city_access" name="city_access">
+                        <label class="form-check-label" for="city_access">Enable City Based Access Control</label>
+                    </div>
+
+                    <h5>Permissions</h5>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Module</th>
+                                <th>Add</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
+                                <th>Export</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Dashboard</td>
+                                <td><input type="checkbox" name="permissions[dashboard][add]"></td>
+                                <td><input type="checkbox" name="permissions[dashboard][edit]"></td>
+                                <td><input type="checkbox" name="permissions[dashboard][delete]"></td>
+                                <td><input type="checkbox" name="permissions[dashboard][export]"></td>
+                            </tr>
+                            <tr>
+                                <td>User Management</td>
+                                <td><input type="checkbox" name="permissions[userManagement][add]"></td>
+                                <td><input type="checkbox" name="permissions[userManagement][edit]"></td>
+                                <td><input type="checkbox" name="permissions[userManagement][delete]"></td>
+                                <td><input type="checkbox" name="permissions[userManagement][export]"></td>
+                            </tr>
+                            <tr>
+                                <td>Role Management</td>
+                                <td><input type="checkbox" name="permissions[rolesManagement][add]"></td>
+                                <td><input type="checkbox" name="permissions[rolesManagement][edit]"></td>
+                                <td><input type="checkbox" name="permissions[rolesManagement][delete]"></td>
+                                <td><input type="checkbox" name="permissions[rolesManagement][export]"></td>
+                            </tr>
+                            <tr>
+                                <td>Backend User Management</td>
+                                <td><input type="checkbox" name="permissions[backendUserManagement][add]"></td>
+                                <td><input type="checkbox" name="permissions[backendUserManagement][edit]"></td>
+                                <td><input type="checkbox" name="permissions[backendUserManagement][delete]"></td>
+                                <td><input type="checkbox" name="permissions[backendUserManagement][export]"></td>
+                            </tr>
+                            <tr>
+                                <td>Fleet Management</td>
+                                <td><input type="checkbox" name="permissions[fleetManagement][add]"></td>
+                                <td><input type="checkbox" name="permissions[fleetManagement][edit]"></td>
+                                <td><input type="checkbox" name="permissions[fleetManagement][delete]"></td>
+                                <td><input type="checkbox" name="permissions[fleetManagement][export]"></td>
+                            </tr>
+                            <tr>
+                                <td>Order Management</td>
+                                <td><input type="checkbox" name="permissions[orderManagement][add]"></td>
+                                <td><input type="checkbox" name="permissions[orderManagement][edit]"></td>
+                                <td><input type="checkbox" name="permissions[orderManagement][delete]"></td>
+                                <td><input type="checkbox" name="permissions[orderManagement][export]"></td>
+                            </tr>
+                            <tr>
+                                <td>Shipment Management</td>
+                                <td><input type="checkbox" name="permissions[shipmentManagement][add]"></td>
+                                <td><input type="checkbox" name="permissions[shipmentManagement][edit]"></td>
+                                <td><input type="checkbox" name="permissions[shipmentManagement][delete]"></td>
+                                <td><input type="checkbox" name="permissions[shipmentManagement][export]"></td>
+                            </tr>
+                            <tr>
+                                <td>Warehouse Management</td>
+                                <td><input type="checkbox" name="permissions[warehouseManagement][add]"></td>
+                                <td><input type="checkbox" name="permissions[warehouseManagement][edit]"></td>
+                                <td><input type="checkbox" name="permissions[warehouseManagement][delete]"></td>
+                                <td><input type="checkbox" name="permissions[warehouseManagement][export]"></td>
+                            </tr>
+
+                            <!-- Add more modules as needed -->
+                        </tbody>
+                    </table>
+
+                    <button type="submit" class="btn btn-primary w-100" id="submitBtn">Save Admin</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- End Add/Edit Sub-Admin Modal -->
+
 
 <!-- JS dependencies -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -55,6 +181,8 @@
 <script>
 
     $(document).ready(function () {
+        const userModal = new bootstrap.Modal(document.getElementById('addUserModal'));
+
         let table = $('#artistTable').DataTable({
             processing: true,
             serverSide: true,
@@ -67,7 +195,7 @@
                 {
                     data: null,
                     render: (data, type, row) => `
-                        <button class="btn btn-sm btn-primary me-2 editUserBtn" data-user='${JSON.stringify(row)}'>
+                        <button class="btn btn-sm btn-primary me-2 editUserBtn"  data-id='${row._id}'>
                             <i class="fas fa-edit"></i> Edit
                         </button>
                         <button class="btn btn-sm btn-danger delUserBtn" data-id='${row._id}'>
@@ -76,6 +204,71 @@
                 }
             ]
         });
+        $('#artistTable').on('click', '.editUserBtn', function () {
+            let id = $(this).data('id'); // Get ID
+
+            $.ajax({
+                url: "/rolesManagement/editRole",
+                type: "POST",
+                data: { id: id }, // Send ID in the request body
+                dataType: "json",
+                success: function (response) {
+                    if (response.success) {
+                        let data = response.data;
+
+                        // Fill General Fields
+                        $('#user_id').val(data._id);  // Hidden field for user ID
+                        $('#name').val(data.name);
+                        $('#email').val(data.email);
+                        $('#mobile').val(data.mobile);
+                        $('#admin_type').val(data.admin_type);
+
+                        // Country & City Access
+                        $('#country_access').prop('checked', data.country_access);
+                        $('#city_access').prop('checked', data.city_access);
+
+                        // Reset all permission checkboxes first (to avoid old data issues)
+                        $('input[name^="permissions"]').prop('checked', false);
+
+                        // Populate Permissions Dynamically
+                        if (data.permissions && Array.isArray(data.permissions)) {
+                            data.permissions.forEach(permission => {
+                                let module = permission.module;
+
+                                // Ensure the checkboxes exist before setting values
+                                if ($(`input[name="permissions[${module}][add]"]`).length) {
+                                    $(`input[name="permissions[${module}][add]"]`).prop('checked', permission.add);
+                                    $(`input[name="permissions[${module}][edit]"]`).prop('checked', permission.edit);
+                                    $(`input[name="permissions[${module}][delete]"]`).prop('checked', permission.delete);
+                                    $(`input[name="permissions[${module}][export]"]`).prop('checked', permission.export);
+                                }
+                            });
+                        }
+
+                        // Show the modal
+                        userModal.show();
+                    } else {
+                        alert("Failed to fetch user details.");
+                    }
+                },
+                error: function () {
+                    alert("Error fetching user data.");
+                }
+            });
+        });
+
+
+        $('#addUserModal').on('hidden.bs.modal', function () {
+            resetForm();
+        });
+
+        function resetForm() {
+            $('#userForm')[0].reset();
+            $('#user_id').val('');
+            $('#addUserModal .modal-title').text('Add User');
+            $('#submitBtn').text('Add User');
+            $('#userForm').attr('action', '/saveUserdata');
+        }
 
     });
 </script>

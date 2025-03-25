@@ -20,7 +20,9 @@ router.post('/sendOtp', AuthCtrl.sendOtp);
 router.post('/usersList', UserCtrl.userList);
 router.post('/saveUserdata', UserCtrl.saveUserData);
 router.post('/updateUser', UserCtrl.updateUser);
-router.post('/saveRoles', RolesCtrl.saveRolesPermissions);
+router.post('/saveRoles', RolesCtrl.saveRolesPermissions)
+router.post('/rolesManagement/editRole', RolesCtrl.editRole);
+
 router.post('/backendUserManagement/getList', RolesCtrl.getList);
 router.delete('/delete-user/:id', UserCtrl.deleteUser);
 
