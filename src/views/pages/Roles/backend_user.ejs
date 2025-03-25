@@ -50,7 +50,7 @@
 <div class="modal fade" id="addUserModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form id="subAdminForm" method="POST">
+            <form id="adminForm" method="POST">
                 <input type="hidden" name="user_id" id="user_id" value="">
 
                 <div class="modal-header bg-primary text-white">
@@ -102,65 +102,79 @@
                                 <th>Export</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="permissionsTable">
                             <tr>
-                                <td>Dashboard</td>
-                                <td><input type="checkbox" name="permissions[dashboard][add]"></td>
-                                <td><input type="checkbox" name="permissions[dashboard][edit]"></td>
-                                <td><input type="checkbox" name="permissions[dashboard][delete]"></td>
-                                <td><input type="checkbox" name="permissions[dashboard][export]"></td>
+                                <td>Dashboard
+                                    <input type="hidden" class="url" value="dashboard">
+                                </td>
+                                <td><input type="checkbox" class="add"></td>
+                                <td><input type="checkbox" class="edit"></td>
+                                <td><input type="checkbox" class="delete"></td>
+                                <td><input type="checkbox" class="export"></td>
                             </tr>
                             <tr>
-                                <td>User Management</td>
-                                <td><input type="checkbox" name="permissions[userManagement][add]"></td>
-                                <td><input type="checkbox" name="permissions[userManagement][edit]"></td>
-                                <td><input type="checkbox" name="permissions[userManagement][delete]"></td>
-                                <td><input type="checkbox" name="permissions[userManagement][export]"></td>
+                                <td>User Management
+                                    <input type="hidden" class="url" value="userManagement">
+                                </td>
+                                <td><input type="checkbox" class="add"></td>
+                                <td><input type="checkbox" class="edit"></td>
+                                <td><input type="checkbox" class="delete"></td>
+                                <td><input type="checkbox" class="export"></td>
                             </tr>
                             <tr>
-                                <td>Role Management</td>
-                                <td><input type="checkbox" name="permissions[rolesManagement][add]"></td>
-                                <td><input type="checkbox" name="permissions[rolesManagement][edit]"></td>
-                                <td><input type="checkbox" name="permissions[rolesManagement][delete]"></td>
-                                <td><input type="checkbox" name="permissions[rolesManagement][export]"></td>
+                                <td>Role Management
+                                    <input type="hidden" class="url" value="rolesManagement">
+                                </td>
+                                <td><input type="checkbox" class="add"></td>
+                                <td><input type="checkbox" class="edit"></td>
+                                <td><input type="checkbox" class="delete"></td>
+                                <td><input type="checkbox" class="export"></td>
                             </tr>
                             <tr>
-                                <td>Backend User Management</td>
-                                <td><input type="checkbox" name="permissions[backendUserManagement][add]"></td>
-                                <td><input type="checkbox" name="permissions[backendUserManagement][edit]"></td>
-                                <td><input type="checkbox" name="permissions[backendUserManagement][delete]"></td>
-                                <td><input type="checkbox" name="permissions[backendUserManagement][export]"></td>
+                                <td>Backend User Management
+                                    <input type="hidden" class="url" value="backendUserManagement">
+                                </td>
+                                <td><input type="checkbox" class="add"></td>
+                                <td><input type="checkbox" class="edit"></td>
+                                <td><input type="checkbox" class="delete"></td>
+                                <td><input type="checkbox" class="export"></td>
                             </tr>
                             <tr>
-                                <td>Fleet Management</td>
-                                <td><input type="checkbox" name="permissions[fleetManagement][add]"></td>
-                                <td><input type="checkbox" name="permissions[fleetManagement][edit]"></td>
-                                <td><input type="checkbox" name="permissions[fleetManagement][delete]"></td>
-                                <td><input type="checkbox" name="permissions[fleetManagement][export]"></td>
+                                <td>Fleet Management
+                                    <input type="hidden" class="url" value="fleetManagement">
+                                </td>
+                                <td><input type="checkbox" class="add"></td>
+                                <td><input type="checkbox" class="edit"></td>
+                                <td><input type="checkbox" class="delete"></td>
+                                <td><input type="checkbox" class="export"></td>
                             </tr>
                             <tr>
-                                <td>Order Management</td>
-                                <td><input type="checkbox" name="permissions[orderManagement][add]"></td>
-                                <td><input type="checkbox" name="permissions[orderManagement][edit]"></td>
-                                <td><input type="checkbox" name="permissions[orderManagement][delete]"></td>
-                                <td><input type="checkbox" name="permissions[orderManagement][export]"></td>
+                                <td>Order Management
+                                    <input type="hidden" class="url" value="orderManagement">
+                                </td>
+                                <td><input type="checkbox" class="add"></td>
+                                <td><input type="checkbox" class="edit"></td>
+                                <td><input type="checkbox" class="delete"></td>
+                                <td><input type="checkbox" class="export"></td>
                             </tr>
                             <tr>
-                                <td>Shipment Management</td>
-                                <td><input type="checkbox" name="permissions[shipmentManagement][add]"></td>
-                                <td><input type="checkbox" name="permissions[shipmentManagement][edit]"></td>
-                                <td><input type="checkbox" name="permissions[shipmentManagement][delete]"></td>
-                                <td><input type="checkbox" name="permissions[shipmentManagement][export]"></td>
+                                <td>Shipment Management
+                                    <input type="hidden" class="url" value="shipmentManagement">
+                                </td>
+                                <td><input type="checkbox" class="add"></td>
+                                <td><input type="checkbox" class="edit"></td>
+                                <td><input type="checkbox" class="delete"></td>
+                                <td><input type="checkbox" class="export"></td>
                             </tr>
                             <tr>
-                                <td>Warehouse Management</td>
-                                <td><input type="checkbox" name="permissions[warehouseManagement][add]"></td>
-                                <td><input type="checkbox" name="permissions[warehouseManagement][edit]"></td>
-                                <td><input type="checkbox" name="permissions[warehouseManagement][delete]"></td>
-                                <td><input type="checkbox" name="permissions[warehouseManagement][export]"></td>
+                                <td>Warehouse Management
+                                    <input type="hidden" class="url" value="warehouseManagement">
+                                </td>
+                                <td><input type="checkbox" class="add"></td>
+                                <td><input type="checkbox" class="edit"></td>
+                                <td><input type="checkbox" class="delete"></td>
+                                <td><input type="checkbox" class="export"></td>
                             </tr>
-
-                            <!-- Add more modules as needed -->
                         </tbody>
                     </table>
 
@@ -228,20 +242,21 @@
                         $('#city_access').prop('checked', data.city_access);
 
                         // Reset all permission checkboxes first (to avoid old data issues)
-                        $('input[name^="permissions"]').prop('checked', false);
+                        $('#permissionsTable input[type="checkbox"]').prop('checked', false);
 
                         // Populate Permissions Dynamically
                         if (data.permissions && Array.isArray(data.permissions)) {
                             data.permissions.forEach(permission => {
                                 let module = permission.module;
 
-                                // Ensure the checkboxes exist before setting values
-                                if ($(`input[name="permissions[${module}][add]"]`).length) {
-                                    $(`input[name="permissions[${module}][add]"]`).prop('checked', permission.add);
-                                    $(`input[name="permissions[${module}][edit]"]`).prop('checked', permission.edit);
-                                    $(`input[name="permissions[${module}][delete]"]`).prop('checked', permission.delete);
-                                    $(`input[name="permissions[${module}][export]"]`).prop('checked', permission.export);
-                                }
+                                // Find the correct row based on the module name
+                                let row = $(`#permissionsTable tr:has(input[value="${module}"])`);
+
+                                // Set the corresponding checkboxes
+                                row.find('.add').prop('checked', permission.add);
+                                row.find('.edit').prop('checked', permission.edit);
+                                row.find('.delete').prop('checked', permission.delete);
+                                row.find('.export').prop('checked', permission.export);
                             });
                         }
 
@@ -257,18 +272,47 @@
             });
         });
 
+        $("#adminForm").on("submit", function (event) {
+            event.preventDefault();
 
-        $('#addUserModal').on('hidden.bs.modal', function () {
-            resetForm();
+            let formData = {
+                name: $("input[name='name']").val(),
+                user_id: $("input[name='user_id']").val(),
+                mobile: $("input[name='mobile']").val(),
+                email: $("input[name='email']").val(),
+                admin_type: $("select[name='admin_type']").val(),
+                password: $("input[name='password']").val(),
+                country_access: $("input[name='country_access']").prop("checked"),
+                city_access: $("input[name='city_access']").prop("checked"),
+                permissions: []
+            };
+
+            $("#permissionsTable tr").each(function () {
+                let module = $(this).find(".url").val(); // Correctly fetch hidden input
+                let permission = {
+                    module: module,
+                    add: $(this).find(".add").prop("checked"),
+                    edit: $(this).find(".edit").prop("checked"),
+                    delete: $(this).find(".delete").prop("checked"),
+                    export: $(this).find(".export").prop("checked"),
+                };
+                formData.permissions.push(permission);
+            });
+
+            console.log('FormData', formData); // For Debugging
+
+            // Post request (Adjust URL accordingly)
+            $.post("/updateRoles", formData, function (response) {
+                alert("Admin saved successfully!");
+                $("#adminForm")[0].reset();
+            }).fail(function () {
+                alert("Error saving admin!");
+            });
         });
 
-        function resetForm() {
-            $('#userForm')[0].reset();
-            $('#user_id').val('');
-            $('#addUserModal .modal-title').text('Add User');
-            $('#submitBtn').text('Add User');
-            $('#userForm').attr('action', '/saveUserdata');
-        }
+
+
+
 
     });
 </script>

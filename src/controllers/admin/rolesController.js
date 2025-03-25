@@ -29,6 +29,34 @@ const saveRolesPermissions = async (req, res) => {
     }
 }
 
+const updateRolesPermissions = async (req, res) => {
+    try {
+        console.log("Update Request Body:", req.body); // Debugging
+
+        const { user_id, name, email, mobile, admin_type, permissions } = req.body;
+
+        if (!user_id) {
+            return res.status(400).json({ success: false, message: 'User ID is required' });
+        }
+
+        const updatedUser = await AdminUser.findByIdAndUpdate(
+            user_id,
+            { name, email, mobile, admin_type, permissions },
+            { new: true }
+        );
+
+        if (!updatedUser) {
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
+
+        res.json({ success: true, message: 'User updated successfully!', updatedUser });
+    } catch (error) {
+        console.error("Error updating user:", error);
+        res.status(500).json({ success: false, message: 'Error updating user', error });
+    }
+};
+
+
 const rolesPermissions = (req, res) => {
     res.render('pages/Roles/roles');
 }
@@ -93,4 +121,4 @@ const getList = async (req, res) => {
         res.status(500).json({ error: 'Something went wrong' });
     }
 };
-module.exports = { rolesPermissions, saveRolesPermissions, backendUser, getList, editRole }
+module.exports = { rolesPermissions, saveRolesPermissions, updateRolesPermissions, backendUser, getList, editRole }

@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+
 const PermissionSchema = new mongoose.Schema({
     module: { type: String, required: true },
     add: { type: Boolean, default: false },
