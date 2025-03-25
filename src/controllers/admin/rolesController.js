@@ -2,6 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const AdminUser = require('../../models/admin/adminModel');
+
 const bcrypt = require('bcrypt');
 
 const saveRolesPermissions = async (req, res) => {
@@ -33,6 +34,43 @@ const rolesPermissions = (req, res) => {
 }
 
 const backendUser = (req, res) => {
-    res.render('pages/Roles/backenduser');
+    res.render('pages/Roles/backend_user');
 }
-module.exports = { rolesPermissions, saveRolesPermissions, backendUser }
+
+
+const getList = async (req, res) => {
+
+    try {
+        let search = req.body.search?.value || '';
+        let start = parseInt(req.body.start) || 0;
+        let length = parseInt(req.body.length) || 10;
+
+        let query = {};
+
+        if (search) {
+            query = {
+                $or: [
+                    { name: { $regex: search, $options: 'i' } },
+                    { email: { $regex: search, $options: 'i' } },
+                    { mobile: { $regex: search, $options: 'i' } }
+                ]
+            };
+        }
+
+        let totalRecords = await AdminUser.countDocuments();
+        let filteredRecords = await AdminUser.countDocuments(query);
+        let users = await AdminUser.find(query).skip(start).limit(length);
+
+        res.json({
+            draw: req.body.draw,
+            recordsTotal: totalRecords,
+            recordsFiltered: filteredRecords,
+            data: users // must be array of objects matching columns
+        });
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Something went wrong' });
+    }
+};
+module.exports = { rolesPermissions, saveRolesPermissions, backendUser, getList }
