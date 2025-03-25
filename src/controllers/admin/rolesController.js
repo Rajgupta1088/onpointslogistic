@@ -32,4 +32,7 @@ const rolesPermissions = (req, res) => {
     res.render('pages/Roles/roles');
 }
 
-module.exports = { rolesPermissions, saveRolesPermissions }
+const backendUser = (req, res) => {
+    res.render('pages/Roles/backenduser');
+}
+module.exports = { rolesPermissions, saveRolesPermissions, backendUser }

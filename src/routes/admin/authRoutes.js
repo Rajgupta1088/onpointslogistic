@@ -4,6 +4,10 @@ const AuthCtrl = require('../../controllers/admin/authController');
 const DashboardCtrl = require('../../controllers/admin/dashboardController');
 const RolesCtrl = require('../../controllers/admin/rolesController');
 const UserCtrl = require('../../controllers/admin/userController');
+const FleetCtrl = require('../../controllers/admin/fleetController');
+const OrderCtrl = require('../../controllers/admin/orderController');
+const ShipmentCtrl = require('../../controllers/admin/shipmentController');
+const WarehouseCtrl = require('../../controllers/admin/warehouseController');
 
 // Middleware
 const isAuthenticated = require('../../middleware/admin/checkLoggedIn');
@@ -33,6 +37,11 @@ router.use(isAuthenticated);
 router.get('/dashboard', DashboardCtrl.dashboardPage);
 router.get('/userManagement', UserCtrl.userPage);
 router.get('/rolesManagement', RolesCtrl.rolesPermissions);
+router.get('/backendUserManagement', RolesCtrl.backendUser);
+router.get('/fleetManagement', FleetCtrl.fleetPage);
+router.get('/orderManagement', OrderCtrl.orderPage);
+router.get('/shipmentManagement', ShipmentCtrl.shipmentPage);
+router.get('/warehouseManagement', WarehouseCtrl.warehousePage);
 
 
 
