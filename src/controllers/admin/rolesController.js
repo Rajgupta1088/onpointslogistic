@@ -31,7 +31,7 @@ const saveRolesPermissions = async (req, res) => {
 
 const updateRolesPermissions = async (req, res) => {
     try {
-        console.log("Update Request Body:", req.body); // Debugging
+        // console.log("Update Request Body:", req.body); // Debugging
 
         const { user_id, name, email, mobile, admin_type, permissions } = req.body;
 

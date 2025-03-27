@@ -76,7 +76,6 @@ const verifyOtpData = async (req, res) => {
             permissions: admin.permissions
         };
 
-        console.log('Session:', req.session.admin);
         console.log('OTP verified successfully!');
         return res.redirect('/dashboard');
 
