@@ -8,6 +8,7 @@ const FleetCtrl = require('../../controllers/admin/fleetController');
 const OrderCtrl = require('../../controllers/admin/orderController');
 const ShipmentCtrl = require('../../controllers/admin/shipmentController');
 const WarehouseCtrl = require('../../controllers/admin/warehouseController');
+const ConfigrationCtrl = require('../../controllers/admin/configrationController');
 
 // Middleware
 const isAuthenticated = require('../../middleware/admin/checkLoggedIn');
@@ -23,10 +24,18 @@ router.post('/updateUser', UserCtrl.updateUser);
 router.post('/saveRoles', RolesCtrl.saveRolesPermissions)
 router.post('/updateRoles', RolesCtrl.updateRolesPermissions)
 router.post('/rolesManagement/editRole', RolesCtrl.editRole);
+router.post("/configuration/saveSetting", ConfigrationCtrl.saveSettings);
+
 
 router.post('/backendUserManagement/getList', RolesCtrl.getList);
 router.delete('/delete-user/:id', UserCtrl.deleteUser);
 
+
+const { appSetting, saveSettings, getSettings } = require("../../controllers/admin/configrationController");
+
+router.get("/settings", appSetting);
+router.post("/save-settings", saveSettings);
+router.get("/get-settings", getSettings);
 
 
 router.post('/verifyOtpData', AuthCtrl.verifyOtpData);
@@ -46,6 +55,8 @@ router.get('/fleetManagement', FleetCtrl.fleetPage);
 router.get('/orderManagement', OrderCtrl.orderPage);
 router.get('/shipmentManagement', ShipmentCtrl.shipmentPage);
 router.get('/warehouseManagement', WarehouseCtrl.warehousePage);
+router.get('/appSetting', ConfigrationCtrl.appSetting);
+
 
 
 
