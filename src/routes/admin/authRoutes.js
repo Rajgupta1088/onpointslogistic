@@ -9,6 +9,12 @@ const OrderCtrl = require('../../controllers/admin/orderController');
 const ShipmentCtrl = require('../../controllers/admin/shipmentController');
 const WarehouseCtrl = require('../../controllers/admin/warehouseController');
 const ConfigrationCtrl = require('../../controllers/admin/configrationController');
+const BannerCtrl = require('../../controllers/admin/bannerController');
+const BlogsCtrl = require('../../controllers/admin/blogsController');
+
+const TestimonialCtrl = require('../../controllers/admin/testimonialController');
+const ContactCtrl = require('../../controllers/admin/contactUsController');
+const GalleryCtrl = require('../../controllers/admin/galleryController');
 
 // Middleware
 const isAuthenticated = require('../../middleware/admin/checkLoggedIn');
@@ -44,7 +50,7 @@ router.post('/verifyOtpData', AuthCtrl.verifyOtpData);
 router.get('/logout', AuthCtrl.logout);
 
 // Apply middleware AFTER public routes
-router.use(isAuthenticated);
+// router.use(isAuthenticated);
 
 // Protected Routes (Need login)
 router.get('/dashboard', DashboardCtrl.dashboardPage);
@@ -56,6 +62,11 @@ router.get('/orderManagement', OrderCtrl.orderPage);
 router.get('/shipmentManagement', ShipmentCtrl.shipmentPage);
 router.get('/warehouseManagement', WarehouseCtrl.warehousePage);
 router.get('/appSetting', ConfigrationCtrl.appSetting);
+router.get('/bannerManagement', BannerCtrl.bannerPage);
+router.get('/blogsManagement', BlogsCtrl.blogsPage);
+router.get('/testimonialManagement', TestimonialCtrl.testmonialPage);
+router.get('/contactUs', ContactCtrl.contactUsPage);
+router.get('/galleryManagement', GalleryCtrl.galleryPage);
 
 
 
