@@ -20,6 +20,10 @@
             <button class="nav-link" id="smsCredentials-tab" data-bs-toggle="tab" data-bs-target="#twilioCred"
                 type="button" role="tab">SMS Credential</button>
         </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="smsCredentials-tab" data-bs-toggle="tab" data-bs-target="#awsS3" type="button"
+                role="tab">S3 Credential</button>
+        </li>
     </ul>
 
     <div class="tab-content mt-3" id="myTabContent">
@@ -35,7 +39,7 @@
                 <div class="mb-3">
                     <label class="form-label">Firebase Email</label>
                     <input type="email" class="form-control" id="firebaseEmail"
-                        value="<%= settings?.firebase?.email || '' %>" required>
+                        value="<%= settings?.firebase?.firebaseEmail || '' %>" required>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Firebase ID</label>
@@ -58,12 +62,12 @@
                 <div class="mb-3">
                     <label class="form-label">Email</label>
                     <input type="email" class="form-control" id="supportEmail"
-                        value="<%= settings?.helpSupport?.email || '' %>" required>
+                        value="<%= settings?.helpSupport?.supportEmail || '' %>" required>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Mobile</label>
                     <input type="tel" class="form-control" id="supportMobile"
-                        value="<%= settings?.helpSupport?.mobile || '' %>" required>
+                        value="<%= settings?.helpSupport?.supportMobile || '' %>" required>
                 </div>
                 <button type="submit" class="btn btn-primary">Save</button>
             </form>

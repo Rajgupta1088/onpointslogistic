@@ -3,13 +3,13 @@ const mongoose = require("mongoose");
 const SettingsSchema = new mongoose.Schema({
     firebase: {
         projectId: String,
-        email: String,
+        firebaseEmail: String,
         firebaseId: String,
         tokenUrl: String
     },
     helpSupport: {
-        email: String,
-        mobile: String
+        supportEmail: String,
+        supportMobile: String
     },
     applicationLinks: {
         androidClientAppUrl: String,
