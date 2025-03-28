@@ -31,6 +31,18 @@ router.post('/saveRoles', RolesCtrl.saveRolesPermissions)
 router.post('/updateRoles', RolesCtrl.updateRolesPermissions)
 router.post('/rolesManagement/editRole', RolesCtrl.editRole);
 router.post("/configuration/saveSetting", ConfigrationCtrl.saveSettings);
+router.post("/bannerList", BannerCtrl.bannerList);
+router.post("/saveBanner", BannerCtrl.saveBanner);
+router.post("/blogsList", BlogsCtrl.blogsList);
+router.post('/saveBlog', BlogsCtrl.createBlog);
+router.post('/contactList', ContactCtrl.contactList);
+router.post('/saveContact', ContactCtrl.saveContact);
+router.post('/editContact', ContactCtrl.editContact);
+
+router.post('/testimonialList', TestimonialCtrl.getTestimonials);
+router.post('/addTestimonial', TestimonialCtrl.saveTestimonial);
+router.post('/editTestimonial', TestimonialCtrl.editTestimonial);
+router.post('/delTestimonial', TestimonialCtrl.deleteTestimonial);
 
 
 router.post('/backendUserManagement/getList', RolesCtrl.getList);
@@ -38,6 +50,7 @@ router.delete('/delete-user/:id', UserCtrl.deleteUser);
 
 
 const { appSetting, saveSettings, getSettings } = require("../../controllers/admin/configrationController");
+const contactUs = require('../../models/admin/contactUsModel');
 
 router.get("/settings", appSetting);
 router.post("/save-settings", saveSettings);

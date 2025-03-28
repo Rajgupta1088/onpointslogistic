@@ -1,9 +1,10 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
-const bannerModel = new mongoose.Schema({
-    image: { type: String, required: true }, // Stores file path
-    text: { type: String, required: true },
-    status: { type: String, enum: ["Active", "Inactive"], default: "Active" },
+const BannerSchema = new mongoose.Schema({
+    title: { type: String, required: true },
+    type: { type: String, required: true },
+    status: { type: Boolean, default: true },
+    image: { type: String } // Stores filename of the image
 }, { timestamps: true });
 
-module.exports = mongoose.model("Banner", bannerModel);
+module.exports = mongoose.model('Banner', BannerSchema);

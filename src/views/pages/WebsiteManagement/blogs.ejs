@@ -22,26 +22,31 @@
     .modal-title {
         font-weight: bold;
     }
+
+    /* Increase CKEditor Height */
+    .ck-editor__editable {
+        min-height: 300px !important;
+    }
 </style>
 
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h3 class="fw-bold">👥 Blogs Management</h3>
-        <button class="btn btn-pink" id="addUserBtn">
-            <i class="fas fa-plus"></i> Add User
+        <h3 class="fw-bold">📢 Blog Management</h3>
+        <button class="btn btn-pink" id="addBlogBtn">
+            <i class="fas fa-plus"></i> Add Blog
         </button>
     </div>
-
     <div class="card shadow-sm">
         <div class="card-body">
-            <table id="artistTable" class="table table-bordered table-hover">
+            <table id="blogTable" class="table table-bordered table-hover">
                 <thead class="table-dark">
                     <tr>
                         <th>#</th>
-                        <th>User Name</th>
-                        <th>Email</th>
-                        <th>Mobile</th>
-                        <th>Gender</th>
+                        <th>Blog Title</th>
+                        <th>Banner Image</th>
+                        <th>Poster Image</th>
+                        <th>Description</th>
+                        <th>Tags</th>
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
@@ -52,141 +57,179 @@
     </div>
 </div>
 
-<!-- Add/Edit User Modal -->
-<div class="modal fade" id="addUserModal" tabindex="-1">
-    <div class="modal-dialog">
+<!-- Add/Edit Blog Modal -->
+<div class="modal fade" id="blogModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form id="userForm" method="POST">
-                <input type="hidden" name="user_id" id="user_id" value="">
-                <div class="modal-header bg-pink text-white">
-                    <h5 class="modal-title">Add User</h5>
+            <form id="blogForm" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="blog_id" id="blog_id">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title">Add Blog</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label">User Name</label>
-                        <input type="text" class="form-control" name="name" id="name" required>
+                        <label class="form-label">Blog Title</label>
+                        <input type="text" class="form-control" name="blog_title" id="blog_title" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Email</label>
-                        <input type="email" class="form-control" name="email" id="email" required>
+                        <label class="form-label">Banner Image</label>
+                        <input type="file" class="form-control" name="banner_image" id="banner_image" accept="image/*"
+                            required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Mobile</label>
-                        <input type="text" class="form-control" name="mobile" id="mobile" required>
+                        <label class="form-label">Poster Image</label>
+                        <input type="file" class="form-control" name="poster_image" id="poster_image" accept="image/*"
+                            required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Gender</label>
-                        <select class="form-select" name="gender" id="gender" required>
-                            <option value="">Select Gender</option>
-                            <option value="Male">Male</option>
-                            <option value="Female">Female</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Status</label>
-                        <select class="form-select" name="status" id="status" required>
+                        <label class="form-label">Blog Status</label>
+                        <select class="form-select" name="blog_status" id="blog_status" required>
                             <option value="">Select Status</option>
                             <option value="Active">Active</option>
                             <option value="Inactive">Inactive</option>
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-pink w-100" id="submitBtn">Add User</button>
+                    <div class="mb-3">
+                        <label class="form-label">Blog Tags</label>
+                        <input type="text" class="form-control" name="blog_tags" id="blog_tags"
+                            placeholder="Comma separated tags" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Blog Description</label>
+                        <textarea class="form-control" name="blog_description" id="blog_description"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100" id="submitBtn">Save Blog</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
-<!-- Add/Edit User Modal -->
-
 
 <!-- JS dependencies -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
 
 <script>
-
     $(document).ready(function () {
-        const userModal = new bootstrap.Modal(document.getElementById('addUserModal'));
-        let table = $('#artistTable').DataTable({
+        let blogEditor;
+        const blogModal = new bootstrap.Modal(document.getElementById('blogModal'));
+
+        // Initialize CKEditor
+        ClassicEditor.create(document.querySelector('#blog_description'), {
+            toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', '|', 'blockQuote', 'undo', 'redo']
+        }).then(editor => {
+            blogEditor = editor;
+        }).catch(error => console.error(error));
+
+        // Initialize DataTable
+        let table = $('#blogTable').DataTable({
             processing: true,
             serverSide: true,
-            ajax: { url: '/usersList', type: 'POST' },
+            ajax: { url: '/blogsList', type: 'GET' },  // ✅ Changed POST to GET
             columns: [
                 { data: null, render: (data, type, row, meta) => meta.row + meta.settings._iDisplayStart + 1 },
-                { data: 'name' },
-                { data: 'email' },
-                { data: 'mobile' },
-                { data: 'gender' },
-                { data: 'status' },
+                { data: 'title' },
+                { data: 'banner_image', render: (data) => data ? `<img src="/uploads/blogs/${data}" class="img-thumbnail" width="80">` : '' },
+                { data: 'poster_image', render: (data) => data ? `<img src="/uploads/blogs/${data}" class="img-thumbnail" width="80">` : '' },
+                { data: 'description' },
+                { data: 'tags' },
+                { data: 'status', render: (data) => data === "Active" ? '<span class="badge bg-success">Active</span>' : '<span class="badge bg-danger">Inactive</span>' },
                 {
                     data: null,
                     render: (data, type, row) => `
-                        <button class="btn btn-sm btn-primary me-2 editUserBtn" data-user='${JSON.stringify(row)}'>
-                            <i class="fas fa-edit"></i> Edit
-                        </button>
-                        <button class="btn btn-sm btn-danger delUserBtn" data-id='${row._id}'>
-                            <i class="fas fa-trash"></i> Delete
-                        </button>`
+                    <button class="btn btn-sm btn-primary me-2 editBlogBtn" data-blog='${JSON.stringify(row)}'>
+                        <i class="fas fa-edit"></i> Edit
+                    </button>
+                    <button class="btn btn-sm btn-danger delBlogBtn" data-id='${row._id}'>
+                        <i class="fas fa-trash"></i> Delete
+                    </button>`
                 }
             ]
         });
 
-        // Add User Button Click
-        $('#addUserBtn').click(() => {
+        // Add Blog Button
+        $('#addBlogBtn').click(() => {
             resetForm();
-            $('#addUserModal .modal-title').text('Add User');
-            $('#submitBtn').text('Add User');
-            $('#userForm').attr('action', '/saveUserdata');
-            userModal.show();
+            $('#blogModal .modal-title').text('Add Blog');
+            $('#submitBtn').text('Save Blog');
+            $('#blogForm').attr('action', '/saveBlog');  // ✅ Ensure correct action
+            blogModal.show();
         });
 
-        // Edit User Button Click
-        $('#artistTable').on('click', '.editUserBtn', function () {
-            let user = $(this).data('user');
-            $('#user_id').val(user._id);
-            $('#name').val(user.name);
-            $('#email').val(user.email);
-            $('#mobile').val(user.mobile);
-            $('#gender').val(user.gender);
-            $('#status').val(user.status);
-            $('#addUserModal .modal-title').text('Edit User');
-            $('#submitBtn').text('Update User');
-            $('#userForm').attr('action', '/updateUser');
-            userModal.show();
+        // Edit Blog Button Click
+        $('#blogTable').on('click', '.editBlogBtn', function () {
+            let blog = $(this).data('blog');
+            $('#blog_id').val(blog._id);
+            $('#blog_title').val(blog.title);
+            $('#blog_status').val(blog.status);
+            $('#blog_tags').val(blog.tags);
+            if (blogEditor) {
+                blogEditor.setData(blog.description);
+            }
+
+            // ✅ Remove required attribute for file input in edit mode
+            $('#banner_image').removeAttr('required');
+            $('#poster_image').removeAttr('required');
+
+            $('#blogModal .modal-title').text('Edit Blog');
+            $('#submitBtn').text('Update Blog');
+            $('#blogForm').attr('action', `/updateBlog/${blog._id}`);  // ✅ Correct URL
+            blogModal.show();
         });
 
-        // Delete User
-        $('#artistTable').on('click', '.delUserBtn', function () {
-            const userId = $(this).data('id');
-            if (confirm(`Are you sure you want to delete this user?`)) {
+        // AJAX Form Submission for Blog Save/Update
+        $('#blogForm').submit(function (e) {
+            e.preventDefault();
+            let formData = new FormData(this);
+
+            $.ajax({
+                url: $(this).attr('action'),
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    alert('Blog saved successfully!');
+                    blogModal.hide();
+                    table.ajax.reload();  // ✅ Reload DataTable
+                },
+                error: function (xhr) {
+                    alert('Error: ' + xhr.responseJSON.message);
+                }
+            });
+        });
+
+        // Delete Blog
+        $('#blogTable').on('click', '.delBlogBtn', function () {
+            if (confirm('Are you sure you want to delete this blog?')) {
+                let blogId = $(this).data('id');
                 $.ajax({
-                    url: `/delete-user/${userId}`,
+                    url: `/deleteBlog/${blogId}`,
                     type: 'DELETE',
-                    success: function (response) {
-                        alert(response.message);
+                    success: function () {
+                        alert('Blog deleted successfully!');
                         table.ajax.reload();
                     },
-                    error: function () {
-                        alert('Failed to delete user');
+                    error: function (xhr) {
+                        alert('Error: ' + xhr.responseJSON.message);
                     }
                 });
             }
         });
 
-        // Reset form on modal hide
-        $('#addUserModal').on('hidden.bs.modal', function () {
-            resetForm();
-        });
-
+        // Reset Form
         function resetForm() {
-            $('#userForm')[0].reset();
-            $('#user_id').val('');
-            $('#addUserModal .modal-title').text('Add User');
-            $('#submitBtn').text('Add User');
-            $('#userForm').attr('action', '/saveUserdata');
+            $('#blogForm')[0].reset();
+            $('#blog_id').val('');
+            $('#banner_image').attr('required', true);
+            $('#poster_image').attr('required', true);
+            if (blogEditor) {
+                blogEditor.setData('');
+            }
         }
     });
+
 </script>

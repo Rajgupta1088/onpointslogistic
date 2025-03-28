@@ -1,97 +1,114 @@
 
+const AWS = require('aws-sdk');
+const fs = require('fs');
+const path = require('path');
+const Banner = require('../../models/admin/bannerModel'); // Import Banner model
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/banners/' });
+
+
+
 const bannerPage = (req, res) => {
     res.render('pages/WebsiteManagement/banner');
 }
 
+const bannerList = async (req, res) => {
 
-const Banner = require("../../models/admin/bannerModel");
-const path = require("path");
-const fs = require("fs");
-
-// Show all banners
-const getBanners = async (req, res) => {
     try {
-        const banners = await Banner.find().sort({ createdAt: -1 });
-        res.render("banners/list", { banners });
-    } catch (err) {
-        res.status(500).send("Error fetching banners");
-    }
-};
+        let search = req.body.search?.value || '';
+        let start = parseInt(req.body.start) || 0;
+        let length = parseInt(req.body.length) || 10;
 
-// Render Add Banner Form
-const addBannerForm = (req, res) => {
-    res.render("banners/form", { banner: null });
-};
+        let query = {};
 
-// Save New Banner
-const createBanner = async (req, res) => {
-    try {
-        if (!req.file) return res.status(400).send("Image is required");
-
-        const banner = new Banner({
-            image: "/uploads/" + req.file.filename,
-            text: req.body.text,
-            status: req.body.status || "Active",
-        });
-
-        await banner.save();
-        res.redirect("/admin/banners");
-    } catch (err) {
-        res.status(500).send("Error creating banner");
-    }
-};
-
-// Render Edit Banner Form
-const editBannerForm = async (req, res) => {
-    try {
-        const banner = await Banner.findById(req.params.id);
-        if (!banner) return res.status(404).send("Banner not found");
-
-        res.render("banners/form", { banner });
-    } catch (err) {
-        res.status(500).send("Error fetching banner");
-    }
-};
-
-// Update Banner
-const updateBanner = async (req, res) => {
-    try {
-        let banner = await Banner.findById(req.params.id);
-        if (!banner) return res.status(404).send("Banner not found");
-
-        banner.text = req.body.text;
-        banner.status = req.body.status;
-
-        if (req.file) {
-            // Delete old image
-            fs.unlinkSync(path.join(__dirname, "../public", banner.image));
-            banner.image = "/uploads/" + req.file.filename;
+        if (search) {
+            query = {
+                $or: [
+                    { name: { $regex: search, $options: 'i' } },
+                    { email: { $regex: search, $options: 'i' } },
+                    { mobile: { $regex: search, $options: 'i' } }
+                ]
+            };
         }
 
-        await banner.save();
-        res.redirect("/admin/banners");
+        let totalRecords = await Banner.countDocuments();
+        let filteredRecords = await Banner.countDocuments(query);
+        let users = await Banner.find(query).skip(start).limit(length);
+
+        res.json({
+            draw: req.body.draw,
+            recordsTotal: totalRecords,
+            recordsFiltered: filteredRecords,
+            data: users // must be array of objects matching columns
+        });
+
     } catch (err) {
-        res.status(500).send("Error updating banner");
+        console.error(err);
+        res.status(500).json({ error: 'Something went wrong' });
     }
 };
 
-// Delete Banner
-const deleteBanner = async (req, res) => {
+
+// Configure AWS S3
+const s3 = new AWS.S3({
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    region: process.env.AWS_REGION
+});
+
+const saveBanner = async (req, res) => {
     try {
-        const banner = await Banner.findById(req.params.id);
-        if (!banner) return res.status(404).send("Banner not found");
+        console.log("Received file:", req.file); // Debugging
+        console.log("Received body:", req.body); // Debugging
 
-        // Delete image file
-        fs.unlinkSync(path.join(__dirname, "../public", banner.image));
+        const { title, type, status } = req.body;
+        let file = req.file;
 
-        await banner.deleteOne();
-        res.redirect("/admin/banners");
-    } catch (err) {
-        res.status(500).send("Error deleting banner");
+        if (!file) {
+            return res.status(400).json({ message: 'Image file is required' });
+        }
+
+        const s3Params = {
+            Bucket: process.env.AWS_S3_BUCKET,
+            Key: `banners/${Date.now()}_${file.originalname}`,
+            Body: fs.createReadStream(file.path),
+            ContentType: file.mimetype,
+        };
+
+        try {
+            const s3Upload = await s3.upload(s3Params).promise();
+            imagePath = s3Upload.Location; // Store S3 URL
+        } catch (error) {
+            console.error('S3 Upload Error:', error);
+            const uploadDir = 'uploads/banners';
+            if (!fs.existsSync(uploadDir)) {
+                fs.mkdirSync(uploadDir, { recursive: true });
+            }
+            const localPath = path.join(uploadDir, file.filename);
+            fs.renameSync(file.path, localPath);
+            imagePath = localPath;
+        }
+
+        const banner = new Banner({
+            title,
+            type,
+            status: status === 'Active',
+            image: imagePath,
+        });
+        await banner.save();
+
+        res.status(201).json({ message: 'Banner saved successfully', banner });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });
     }
 };
 
 
-module.exports = {
-    deleteBanner, addBannerForm, createBanner, getBanners, editBannerForm, updateBanner, bannerPage
-}
+
+module.exports = { bannerPage, bannerList, saveBanner }
+
+
+
+
+
