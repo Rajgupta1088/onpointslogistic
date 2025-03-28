@@ -1,4 +1,6 @@
 const Admin = require('../../models/admin/adminModel');
+const bcrypt = require('bcrypt');
+
 
 // Render login page
 const loginPage = (req, res) => {
@@ -88,6 +90,39 @@ const verifyOtpData = async (req, res) => {
 const permissionDenied = (req, res) => {
     res.render('pages/Login/not_authorized');
 };
+const checkLogin = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        // Find admin user
+        const admin = await Admin.findOne({ email });
+        if (!admin) {
+            return res.status(400).send('Invalid email or password'); // Generic message for security
+        }
+
+        // Verify password
+        const isMatch = await bcrypt.compare(password, admin.password);
+        if (!isMatch) {
+            return res.status(400).send('Invalid email or password'); // Generic message for security
+        }
+
+        // Store necessary details in session
+        req.session.admin = {
+            id: admin._id,
+            name: admin.name,
+            email: admin.email,
+            admin_type: admin.admin_type,
+            permissions: admin.permissions || [], // Ensure it's always an array
+        };
+
+        console.log(`User ${admin.email} logged in successfully`);
+
+        return res.redirect('/dashboard');
+    } catch (error) {
+        console.error('Login Error:', error);
+        return res.status(500).send('Internal Server Error');
+    }
+};
 
 module.exports = {
     loginPage,
@@ -95,5 +130,7 @@ module.exports = {
     verifyOtp,
     verifyOtpData,
     logout,
-    permissionDenied
+    permissionDenied,
+    checkLogin
 };
+

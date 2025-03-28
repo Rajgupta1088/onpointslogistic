@@ -31,6 +31,7 @@ router.post('/saveRoles', RolesCtrl.saveRolesPermissions)
 router.post('/updateRoles', RolesCtrl.updateRolesPermissions)
 router.post('/rolesManagement/editRole', RolesCtrl.editRole);
 router.post("/configuration/saveSetting", ConfigrationCtrl.saveSettings);
+router.post("/checkLogin", AuthCtrl.checkLogin);
 
 
 router.post('/backendUserManagement/getList', RolesCtrl.getList);

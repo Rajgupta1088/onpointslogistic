@@ -4,30 +4,44 @@ const router = express.Router();
 const AdminUser = require('../../models/admin/adminModel');
 
 const bcrypt = require('bcrypt');
-
 const saveRolesPermissions = async (req, res) => {
     try {
         const { name, mobile, email, admin_type, password, country_access, city_access, permissions } = req.body;
 
+        // Validate required fields
+        if (!name || !mobile || !email || !admin_type || !password) {
+            return res.status(400).json({ success: false, message: "All fields are required" });
+        }
+
+        // Check if admin already exists
+        const existingUser = await AdminUser.findOne({ email });
+        if (existingUser) {
+            return res.status(400).json({ success: false, message: "Admin with this email already exists" });
+        }
+
+        // Hash password
         const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Create new AdminUser
         const adminUser = new AdminUser({
             name,
             mobile,
             email,
             admin_type,
             password: hashedPassword,
-            country_access,
-            city_access,
-            permissions
+            country_access: country_access || false,
+            city_access: city_access || false,
+            permissions: Array.isArray(permissions) ? permissions : []
         });
 
         await adminUser.save();
-        res.json({ success: true, message: 'Admin saved successfully!' });
+        res.json({ success: true, message: "Admin saved successfully!" });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ success: false, message: 'Error saving admin', error: error.message });
+        console.error("Error saving admin:", error);
+        res.status(500).json({ success: false, message: "Internal server error", error: error.message });
     }
-}
+};
+
 
 const updateRolesPermissions = async (req, res) => {
     try {
